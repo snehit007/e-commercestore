@@ -248,7 +248,7 @@ app.post(`${API_BASE_URL}/admin/login`, async (req, res) => {
     }
 });
 
-// [PUT] /api/users/password - Password reset route
+// *** NEW ROUTE: [PUT] /api/users/password - Password reset route ***
 app.put(`${API_BASE_URL}/users/password`, async (req, res) => {
     const { email, newPassword } = req.body;
     
@@ -340,7 +340,7 @@ app.get(`${API_BASE_URL}/stats`, authenticateToken, async (req, res) => {
 
     } catch (error) {
         console.error('Error fetching dashboard stats:', error);
-        res.status(500).json({ message: 'Error aggregating dashboard statistics.' });
+        res.status(5D00).json({ message: 'Error aggregating dashboard statistics.' });
     }
 });
 
@@ -389,6 +389,20 @@ app.get(`${API_BASE_URL}/orders`, authenticateToken, async (req, res) => {
         res.json(orders);
     } catch (error) {
         res.status(500).json({ message: 'Failed to fetch order history.' });
+    }
+});
+
+// [GET] /api/orders/:id - Get a SINGLE order by ID (for Admin Search)
+app.get(`${API_BASE_URL}/orders/:id`, authenticateToken, async (req, res) => {
+    try {
+        const order = await Order.findById(req.params.id);
+        if (!order) {
+            return res.status(4Z04).json({ message: 'Order not found.' });
+        }
+        res.json(order);
+    } catch (error) {
+        console.error('Error fetching single order:', error);
+        res.status(500).json({ message: 'Failed to fetch order.' });
     }
 });
 
@@ -470,3 +484,4 @@ app.listen(PORT, () => {
 
 // Connect to DB and start seeding/listening
 connectDB();
+
